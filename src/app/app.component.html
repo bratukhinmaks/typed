@@ -1,20 +1,44 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+<div class="container">
+  <h2 class="mb-3"><span class="text-success">Search</span> Github</h2>
+  <form [formGroup]="form">
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon1">@</span>
+      </div>
+      <input type="text" (input)="searchUsers($event)"  class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" formControlName="username" >
+    </div>
+    <div class="form-errors" *ngIf="form.touched && form.invalid">
+      <small class="text-danger">Please provide correct user</small>
+    </div>
+  </form>
+  <div *ngIf="isLoadingRepos$ | async; else repo">
+    <app-spinner></app-spinner>
+  </div>
+  <ng-template #repo>
+  <div class="content" *ngIf="(repos$ | async) as repos">
+    <ng-container *ngIf="repos.length > 0; else placeholder">
+      <div class="content-repos list-group">
+          <div class="list-group-item list-group-item-action" [class.active]="selectedItem === i" *ngFor="let repo of repos | paginate: { itemsPerPage: 10, currentPage: p }; let i = index ">
+            <app-repo (click)='selectedItem = i;' [repo]="repo" ></app-repo>
+          </div>
+          <pagination-controls *ngIf="repos.length > 0" (pageChange)="p = $event"></pagination-controls>
+      </div>
+      <div class="content-branches" *ngIf ='branches$ | async as branches ;else nobranch'>
+        <div *ngIf="isLoadingBranches$ | async; else branch">
+          <app-spinner></app-spinner>
+        </div>
+        <ng-template #branch>
+          <app-branch [branches] = 'branches'></app-branch>
+        </ng-template>
+      </div>
+      <ng-template #nobranch>
+        <app-placeholder></app-placeholder>
+      </ng-template>
+    </ng-container>
+    <ng-template #placeholder>
+     <app-placeholder></app-placeholder>
+    </ng-template>
+  </div>
+  </ng-template>
 </div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/cli">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
 

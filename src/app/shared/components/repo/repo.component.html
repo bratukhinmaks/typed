@@ -1,0 +1,12 @@
+<div class="repo">
+  <div class="repo-text">
+    <p>User: {{repo.owner.login}}</p>
+    <p>Repo name: {{repo.name}}</p>
+  </div>
+  <div class="repo-button">
+    <button (click)="getBranches(repo.branches_url)" class="btn btn-success">Get Repo Branches</button>
+  </div>
+</div>
+
+
+

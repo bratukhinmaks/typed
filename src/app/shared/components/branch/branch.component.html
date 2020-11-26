@@ -1,0 +1,7 @@
+<div *ngFor="let branch of branches">
+  <div class="branch-item">
+    <p class="branch-title"><span class="text-success">Branch name:</span>{{branch.name}}</p>
+    <p class="branch-sha"><span class="text-success">Sha:</span> {{branch.commit.sha}}</p>
+  </div>
+</div>
+
